@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Archisma Ghosal Research</title>
+</head>
+<body>
+  <h1>Welcome to Archisma Ghosal's Research page.</h1>
+  <p>Please provide the item that you need to do the research.</p>
+
+  <input type="text" placeholder="Enter your research item" />
+</body>
+</html>
