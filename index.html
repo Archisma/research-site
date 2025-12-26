@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Archisma Ghosal — Research AI</title>
+
   <style>
     :root{
       --bg:#0b1220;
-      --card:rgba(255,255,255,.06);
       --text:#e9eefc;
       --muted:#a8b3d6;
       --border:rgba(255,255,255,.12);
@@ -32,13 +32,13 @@
     }
 
     .wrap{
-      width: min(920px, 100%);
+      width: min(980px, 100%);
       display:flex;
       justify-content:center;
     }
 
     .card{
-      width: min(720px, 100%);
+      width: min(760px, 100%);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -109,24 +109,34 @@
     }
     .btn:disabled{ opacity:.6; cursor:not-allowed; }
 
+    /* OUTPUT "TAB" / PANEL */
     .outWrap{
-      margin-top: 18px;
-      display:none;
+      margin-top: 20px;
     }
-    .outTitle{
+
+    .outHeader{
       margin: 0 0 8px 2px;
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
     }
+
+    .outPanel{
+      background: rgba(0,0,0,.28);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 140px;
+    }
+
     pre{
       margin:0;
-      background: rgba(0,0,0,.25);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
       white-space: pre-wrap;
       overflow:auto;
       line-height: 1.45;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13.5px;
     }
 
     .foot{
@@ -141,12 +151,14 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Welcome to Archisma Ghosal's Research page</h1>
       <p class="sub">Please provide the item that you need to do the research.</p>
 
+      <!-- INPUT SECTION -->
       <div class="grid">
         <div>
           <label for="topic">Topic of research</label>
@@ -166,9 +178,12 @@
         <button id="btn" class="btn" onclick="runResearch()">Run research</button>
       </div>
 
+      <!-- OUTPUT SECTION -->
       <div id="outWrap" class="outWrap">
-        <p class="outTitle">Result</p>
-        <pre id="out"></pre>
+        <div class="outHeader">Research Output</div>
+        <div class="outPanel">
+          <pre id="out">Output will appear here after you run the research.</pre>
+        </div>
       </div>
 
       <div class="foot">Prototype UI — backend will be connected next.</div>
@@ -180,33 +195,43 @@
       const topic = document.getElementById("topic").value.trim();
       const mode  = document.getElementById("mode").value;
       const btn   = document.getElementById("btn");
-      const outWrap = document.getElementById("outWrap");
       const out   = document.getElementById("out");
 
       if(!topic){
-        outWrap.style.display = "block";
-        out.textContent = "Please enter a Topic of research.";
+        out.textContent = "❌ Please enter a Topic of research.";
         return;
       }
 
       // For now (no backend), just show what will be sent.
       btn.disabled = true;
-      outWrap.style.display = "block";
-      out.textContent = "Preparing request...\n";
-
-      // When backend is ready, replace this with a real fetch() call.
-      const payload = { query: topic, mode: mode };
 
       out.textContent =
-        "✅ Frontend is ready.\n\n" +
-        "This will be sent to the backend API:\n" +
-        JSON.stringify(payload, null, 2) +
-        "\n\nNext step: connect /search endpoint.";
+        "Running research...\n\n" +
+        "Topic: " + topic + "\n" +
+        "Category: " + mode + "\n\n" +
+        "✅ Frontend is ready.\n" +
+        "Next step: connect backend endpoint /search.\n\n" +
+        "Payload that will be sent:\n" +
+        JSON.stringify({ query: topic, mode: mode }, null, 2);
+
+      // When backend is ready, replace the above with:
+      //
+      // try {
+      //   const res = await fetch("https://YOUR-BACKEND-URL/search", {
+      //     method: "POST",
+      //     headers: {"Content-Type":"application/json"},
+      //     body: JSON.stringify({ query: topic, mode })
+      //   });
+      //   const data = await res.json();
+      //   out.textContent = data.answer ?? JSON.stringify(data, null, 2);
+      // } catch (e) {
+      //   out.textContent = "❌ Error: " + e.message;
+      // } finally {
+      //   btn.disabled = false;
+      // }
 
       btn.disabled = false;
     }
   </script>
 </body>
 </html>
-
-
