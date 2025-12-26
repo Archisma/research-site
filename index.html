@@ -94,6 +94,8 @@
       display:flex;
       justify-content:center;
       margin-top: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .btn{
@@ -109,16 +111,26 @@
     }
     .btn:disabled{ opacity:.6; cursor:not-allowed; }
 
-    /* OUTPUT "TAB" / PANEL */
-    .outWrap{
-      margin-top: 20px;
-    }
-
+    .outWrap{ margin-top: 20px; }
     .outHeader{
       margin: 0 0 8px 2px;
       font-size: 14px;
       font-weight: 600;
       color: var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status{
+      font-size: 12px;
+      color: rgba(255,255,255,.7);
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
     }
 
     .outPanel{
@@ -126,7 +138,7 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 12px;
-      min-height: 140px;
+      min-height: 160px;
     }
 
     pre{
@@ -137,6 +149,13 @@
       color: var(--text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size: 13.5px;
+    }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+      line-height: 1.4;
     }
 
     .foot{
@@ -168,29 +187,52 @@
         <div>
           <label for="mode">Category of research</label>
           <select id="mode" class="select">
-            <option value="public">Public (Internet)</option>
             <option value="private">Private (My documents)</option>
+            <option value="public" disabled>Public (Internet) — coming soon</option>
           </select>
         </div>
       </div>
 
       <div class="actions">
         <button id="btn" class="btn" onclick="runResearch()">Run research</button>
+        <button id="clearBtn" class="btn" onclick="clearOutput()" type="button">Clear output</button>
       </div>
 
       <!-- OUTPUT SECTION -->
       <div id="outWrap" class="outWrap">
-        <div class="outHeader">Research Output</div>
+        <div class="outHeader">
+          <span>Research Output</span>
+          <span id="status" class="status">Idle</span>
+        </div>
         <div class="outPanel">
           <pre id="out">Output will appear here after you run the research.</pre>
+          <div class="hint" id="hint">
+            Backend connected to: <span id="backendUrlText"></span><br/>
+            If you get an error, open the backend health check: <span id="healthUrlText"></span>
+          </div>
         </div>
       </div>
 
-      <div class="foot">Prototype UI — backend will be connected next.</div>
+      <div class="foot">Prototype UI — Connected to live backend.</div>
     </div>
   </div>
 
   <script>
+    // ✅ LIVE BACKEND (Render)
+    const BACKEND_URL = "https://archisma-research-backend.onrender.com/search";
+    const HEALTH_URL  = "https://archisma-research-backend.onrender.com/health";
+
+    // Show URLs on page
+    document.getElementById("backendUrlText").textContent = BACKEND_URL;
+    document.getElementById("healthUrlText").textContent  = HEALTH_URL;
+
+    function setStatus(text){ document.getElementById("status").textContent = text; }
+
+    function clearOutput(){
+      document.getElementById("out").textContent = "Output cleared.";
+      setStatus("Idle");
+    }
+
     async function runResearch(){
       const topic = document.getElementById("topic").value.trim();
       const mode  = document.getElementById("mode").value;
@@ -199,39 +241,58 @@
 
       if(!topic){
         out.textContent = "❌ Please enter a Topic of research.";
+        setStatus("Idle");
         return;
       }
 
-      // For now (no backend), just show what will be sent.
+      if(mode !== "private"){
+        out.textContent = "❌ Public search is not enabled yet. Choose Private (My documents).";
+        setStatus("Idle");
+        return;
+      }
+
       btn.disabled = true;
+      setStatus("Running...");
+      out.textContent = "Running research...\n\nPlease wait...";
 
-      out.textContent =
-        "Running research...\n\n" +
-        "Topic: " + topic + "\n" +
-        "Category: " + mode + "\n\n" +
-        "✅ Frontend is ready.\n" +
-        "Next step: connect backend endpoint /search.\n\n" +
-        "Payload that will be sent:\n" +
-        JSON.stringify({ query: topic, mode: mode }, null, 2);
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ query: topic })
+        });
 
-      // When backend is ready, replace the above with:
-      //
-      // try {
-      //   const res = await fetch("https://YOUR-BACKEND-URL/search", {
-      //     method: "POST",
-      //     headers: {"Content-Type":"application/json"},
-      //     body: JSON.stringify({ query: topic, mode })
-      //   });
-      //   const data = await res.json();
-      //   out.textContent = data.answer ?? JSON.stringify(data, null, 2);
-      // } catch (e) {
-      //   out.textContent = "❌ Error: " + e.message;
-      // } finally {
-      //   btn.disabled = false;
-      // }
+        // Non-200 responses (Render/Backend error)
+        if(!res.ok){
+          const text = await res.text();
+          out.textContent =
+            `❌ Backend error (${res.status})\n\n` +
+            `URL: ${BACKEND_URL}\n\n` +
+            `Response:\n${text}\n\n` +
+            `Tip: Check health: ${HEALTH_URL}`;
+          setStatus("Error");
+          return;
+        }
 
-      btn.disabled = false;
+        const data = await res.json();
+        out.textContent = data.answer ?? JSON.stringify(data, null, 2);
+        setStatus("Done");
+      } catch (e) {
+        out.textContent =
+          "❌ Could not reach the backend.\n\n" +
+          `Backend URL: ${BACKEND_URL}\n` +
+          `Health URL:  ${HEALTH_URL}\n\n` +
+          "Error:\n" + (e && e.message ? e.message : String(e));
+        setStatus("Error");
+      } finally {
+        btn.disabled = false;
+      }
     }
+
+    // Press Enter in the topic box to run
+    document.getElementById("topic").addEventListener("keydown", (e) => {
+      if(e.key === "Enter") runResearch();
+    });
   </script>
 </body>
 </html>
