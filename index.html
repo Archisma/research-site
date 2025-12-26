@@ -11,3 +11,202 @@
       --text:#e9eefc;
       --muted:#a8b3d6;
       --border:rgba(255,255,255,.12);
+      --shadow: 0 20px 50px rgba(0,0,0,.45);
+      --radius:18px;
+      --btn1:#4f7cff;
+      --btn2:#2d4fb8;
+      --focus: rgba(79,124,255,.35);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 500px at 50% 0%, #142654 0%, var(--bg) 60%);
+      color: var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 14px;
+    }
+
+    .wrap{
+      width: min(920px, 100%);
+      display:flex;
+      justify-content:center;
+    }
+
+    .card{
+      width: min(720px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+    }
+
+    h1{
+      margin: 0 0 8px 0;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: .2px;
+      text-align:center;
+    }
+
+    .sub{
+      margin: 0 0 22px 0;
+      color: var(--muted);
+      text-align:center;
+      line-height:1.4;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 220px;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    label{
+      display:block;
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 8px 2px;
+    }
+
+    .input, .select{
+      width:100%;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-size: 16px;
+      outline:none;
+    }
+
+    .input:focus, .select:focus{
+      border-color: rgba(79,124,255,.6);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      margin-top: 14px;
+    }
+
+    .btn{
+      border:0;
+      padding: 12px 18px;
+      border-radius: 12px;
+      color:#fff;
+      font-size: 16px;
+      cursor:pointer;
+      background: linear-gradient(180deg, var(--btn1), var(--btn2));
+      box-shadow: 0 10px 25px rgba(79,124,255,.25);
+      min-width: 160px;
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .outWrap{
+      margin-top: 18px;
+      display:none;
+    }
+    .outTitle{
+      margin: 0 0 8px 2px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    pre{
+      margin:0;
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      white-space: pre-wrap;
+      overflow:auto;
+      line-height: 1.45;
+    }
+
+    .foot{
+      margin-top: 14px;
+      text-align:center;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+    }
+
+    @media (max-width: 680px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Welcome to Archisma Ghosal's Research page</h1>
+      <p class="sub">Please provide the item that you need to do the research.</p>
+
+      <div class="grid">
+        <div>
+          <label for="topic">Topic of research</label>
+          <input id="topic" class="input" placeholder="e.g., AI agents in healthcare" />
+        </div>
+
+        <div>
+          <label for="mode">Category of research</label>
+          <select id="mode" class="select">
+            <option value="public">Public (Internet)</option>
+            <option value="private">Private (My documents)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn" class="btn" onclick="runResearch()">Run research</button>
+      </div>
+
+      <div id="outWrap" class="outWrap">
+        <p class="outTitle">Result</p>
+        <pre id="out"></pre>
+      </div>
+
+      <div class="foot">Prototype UI — backend will be connected next.</div>
+    </div>
+  </div>
+
+  <script>
+    async function runResearch(){
+      const topic = document.getElementById("topic").value.trim();
+      const mode  = document.getElementById("mode").value;
+      const btn   = document.getElementById("btn");
+      const outWrap = document.getElementById("outWrap");
+      const out   = document.getElementById("out");
+
+      if(!topic){
+        outWrap.style.display = "block";
+        out.textContent = "Please enter a Topic of research.";
+        return;
+      }
+
+      // For now (no backend), just show what will be sent.
+      btn.disabled = true;
+      outWrap.style.display = "block";
+      out.textContent = "Preparing request...\n";
+
+      // When backend is ready, replace this with a real fetch() call.
+      const payload = { query: topic, mode: mode };
+
+      out.textContent =
+        "✅ Frontend is ready.\n\n" +
+        "This will be sent to the backend API:\n" +
+        JSON.stringify(payload, null, 2) +
+        "\n\nNext step: connect /search endpoint.";
+
+      btn.disabled = false;
+    }
+  </script>
+</body>
+</html>
+
+
