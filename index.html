@@ -39,10 +39,9 @@ body{
 .grid{
   margin-top:18px;
   display:grid;
-  grid-template-columns:1.25fr .75fr;
+  grid-template-columns:1fr;
   gap:16px;
 }
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
 
 .card{
   background:var(--panel);
@@ -129,7 +128,20 @@ textarea{
   resize:vertical;
   font-family:ui-monospace,monospace;
 }
-.status{margin-top:10px;font-size:12px;color:var(--muted)}
+
+.status{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.footerInfo{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  padding-top:10px;
+}
 </style>
 </head>
 
@@ -166,20 +178,21 @@ textarea{
 
       <div class="buttons">
         <button onclick="runResearch()">Run research</button>
-        <button class="ghost" onclick="out.value=''">Clear output</button>
+        <button class="ghost" onclick="out.value=''; status.textContent='Status: Idle';">
+          Clear output
+        </button>
       </div>
 
       <label>Research Output</label>
       <textarea id="out" readonly></textarea>
-      <div class="status" id="status">Status: Idle</div>
-    </div>
 
-    <div class="card">
-      <h3>Info</h3>
-      <p class="helper">
-        Public search uses live internet sources.<br/>
+      <div class="status" id="status">Status: Idle</div>
+
+      <!-- MOVED INFO HERE -->
+      <div class="footerInfo">
+        Public search uses live internet sources.  
         Confidential search is limited to Aurora internal data.
-      </p>
+      </div>
     </div>
   </div>
 </div>
