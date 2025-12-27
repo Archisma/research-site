@@ -1,255 +1,308 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Archisma Ghosal – Research</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Archisma Ghosal – Research</title>
 
-<style>
-:root{
-  --bg:#0b1020;
-  --panel:#111a33;
-  --panel-soft:rgba(255,255,255,.06);
-  --border:rgba(255,255,255,.14);
-  --text:#e9eeff;
-  --muted:#aab6d6;
-  --accent:#6aa6ff;
-  --accent-soft:rgba(106,166,255,.15);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 700px at 10% 10%, #17244a 0%, var(--bg) 55%),
-    linear-gradient(180deg,#0e1530,var(--bg));
-}
-.container{max-width:1200px;margin:0 auto;padding:22px}
-.hero{
-  text-align:center;
-  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:26px 18px;
-}
-.hero h1{margin:0;font-size:42px}
-.hero p{margin:10px 0 0;color:var(--muted)}
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#111a33;
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.14);
+      --text:#e9eeff;
+      --muted:#aab6d6;
+      --accent:#6aa6ff;
+      --accent-soft:rgba(106,166,255,.15);
+      --radius:16px;
+    }
 
-.grid{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:16px;
-}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 10%, #17244a 0%, var(--bg) 55%),
+        linear-gradient(180deg,#0e1530,var(--bg));
+    }
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px;
-}
-label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
-input,select,textarea{
-  width:100%;
-  background:rgba(0,0,0,.25);
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:12px;
-}
-.row{display:grid;grid-template-columns:1fr 300px;gap:12px}
-@media(max-width:700px){.row{grid-template-columns:1fr}}
+    .container{max-width:1200px;margin:0 auto;padding:22px}
 
-.section{
-  margin-top:12px;
-  padding:14px;
-  background:var(--panel-soft);
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-.section h2{margin:0;font-size:18px}
+    .hero{
+      text-align:center;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:26px 18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.3);
+    }
+    .hero h1{margin:0;font-size:42px}
+    .hero p{margin:10px 0 0;color:var(--muted)}
 
-.pill{
-  display:inline-block;
-  margin-left:8px;
-  font-size:12px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,.08);
-  border:1px solid var(--border);
-  color:var(--muted);
-}
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:16px;
+    }
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
-.helper{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.45}
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
 
-.chips{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
-@media(max-width:520px){.chips{grid-template-columns:1fr}}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+    input,select,textarea{
+      width:100%;
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      outline:none;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+    }
 
-.chip{
-  padding:12px;
-  border-radius:14px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--border);
-  cursor:pointer;
-}
-.chip:hover{background:var(--accent-soft);border-color:var(--accent)}
+    .row{display:grid;grid-template-columns:1fr 300px;gap:12px}
+    @media(max-width:700px){.row{grid-template-columns:1fr}}
 
-.buttons{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  margin-top:16px;
-}
-button{
-  min-width:170px;
-  padding:12px 18px;
-  border-radius:14px;
-  border:none;
-  font-weight:700;
-  cursor:pointer;
-  background:linear-gradient(180deg,#7bb1ff,#5a90ff);
-  color:#08142f;
-}
-.ghost{
-  background:rgba(255,255,255,.07);
-  color:var(--text);
-  border:1px solid var(--border);
-}
+    .section{
+      margin-top:12px;
+      padding:14px;
+      background:var(--panel-soft);
+      border:1px solid var(--border);
+      border-radius:14px;
+    }
+    .section h2{margin:0;font-size:18px}
 
-textarea{
-  margin-top:10px;
-  min-height:200px;
-  resize:vertical;
-  font-family:ui-monospace,monospace;
-}
-.status{margin-top:10px;font-size:12px;color:var(--muted)}
-</style>
+    .pill{
+      display:inline-block;
+      margin-left:8px;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+
+    .helper{
+      margin-top:8px;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .chips{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    @media(max-width:520px){.chips{grid-template-columns:1fr}}
+
+    .chip{
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      cursor:pointer;
+      transition:.12s ease;
+    }
+    .chip:hover{
+      background:var(--accent-soft);
+      border-color:var(--accent);
+    }
+
+    .buttons{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    button{
+      min-width:170px;
+      padding:12px 18px;
+      border-radius:14px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      background:linear-gradient(180deg,#7bb1ff,#5a90ff);
+      color:#08142f;
+    }
+    .ghost{
+      background:rgba(255,255,255,.07);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    textarea{
+      margin-top:10px;
+      min-height:200px;
+      resize:vertical;
+      line-height:1.5;
+      font-family:ui-monospace,monospace;
+    }
+
+    .status{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .mono{font-family:ui-monospace,monospace}
+  </style>
 </head>
 
 <body>
 <div class="container">
+
   <div class="hero">
     <h1>Welcome to Archisma Ghosal's Research page</h1>
     <p>Please provide the item that you need to do the research.</p>
   </div>
 
   <div class="grid">
+    <!-- LEFT -->
     <div class="card">
       <div class="row">
         <div>
           <label>Topic of research</label>
-          <input id="topic"/>
+          <input id="topic" placeholder="e.g. Explain what RAG is in simple words"/>
         </div>
         <div>
           <label>Category of research</label>
-          <select id="mode" onchange="renderTips()">
-            <option value="confidential">Confidential (Aurora)</option>
+          <select id="mode" onchange="updateMode()">
             <option value="public">Public (Internet)</option>
+            <option value="confidential">Confidential (Internal)</option>
           </select>
         </div>
       </div>
 
       <div class="section">
-        <h2 id="sectionTitle"></h2>
-        <span class="pill" id="pill"></span>
+        <h2 id="modeTitle">Public Search (Internet)
+          <span class="pill" id="pill">≤ 100 words</span>
+        </h2>
 
-        <p class="helper" id="helperText"></p>
-        <div class="chips" id="chips"></div>
+        <p class="helper" id="helperText">
+          I’m putting my researcher hat on — tell me what you want to research.<br/>
+          <strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.
+        </p>
+
+        <div class="chips">
+          <div class="chip" onclick="setTopic('Explain what RAG is in simple words')">Explain RAG simply</div>
+          <div class="chip" onclick="setTopic('What are the latest AI updates this week?')">Latest AI updates</div>
+          <div class="chip" onclick="setTopic('What is the stock price of Apple today?')">Apple stock price</div>
+          <div class="chip" onclick="setTopic('What are the best free cloud hosting options?')">Free cloud hosting</div>
+          <div class="chip" onclick="setTopic('Summarize today’s tech news headlines')">Tech news summary</div>
+          <div class="chip" onclick="setTopic('Give me a 2-day Boston travel plan')">Boston travel plan</div>
+        </div>
       </div>
 
       <div class="buttons">
         <button onclick="runResearch()">Run research</button>
-        <button class="ghost" onclick="out.value=''">Clear output</button>
+        <button class="ghost" onclick="clearOutput()">Clear output</button>
       </div>
 
-      <label>Research Output</label>
+      <label style="margin-top:14px">Research Output</label>
       <textarea id="out" readonly></textarea>
-      <div class="status" id="status">Status: Idle</div>
+
+      <div class="status">
+        <span id="status">Status: Idle</span>
+        <span class="mono" id="endpoint"></span>
+      </div>
     </div>
 
+    <!-- RIGHT -->
     <div class="card">
       <h3>Info</h3>
-      <p class="helper">Public search uses live internet sources. Confidential search is Aurora-only.</p>
+      <p class="helper">
+        Backend is hosted on Render and public search uses live internet sources.
+      </p>
+      <p class="mono" id="apiInfo"></p>
     </div>
   </div>
 </div>
 
 <script>
-const API_BASE="https://archisma-research-backend.onrender.com";
-const PUBLIC_URL=API_BASE+"/public_search";
-const SEARCH_URL=API_BASE+"/search";
+  const API_BASE = "https://archisma-research-backend.onrender.com";
+  const PUBLIC_URL = API_BASE + "/public_search";
+  const SEARCH_URL = API_BASE + "/search";
 
-const confidentialSamples=[
- "List the major HR policies mentioned in the Aurora policy manual.",
- "According to the policy manual, what rules exist about remote or hybrid work?",
- "Summarize Aurora Systems' code of conduct and disciplinary process.",
- "What is the leave policy (PTO/sick leave) described in the policy manual?",
- "What are the security and data handling rules for employees?",
- "Summarize Aurora Systems' strategic pillars and long-term goals.",
- "What are the top strategic initiatives for the next 3 years?",
- "Show revenue by quarter for 2023 and summarize the trend.",
- "What is the trend of R&D spend by quarter in 2023?",
- "Compare gross margin % across 2023 quarters and summarize the trend."
-];
+  const topicEl = document.getElementById("topic");
+  const outEl = document.getElementById("out");
+  const statusEl = document.getElementById("status");
+  const modeEl = document.getElementById("mode");
+  const endpointEl = document.getElementById("endpoint");
+  const modeTitle = document.getElementById("modeTitle");
+  const helperText = document.getElementById("helperText");
+  const pill = document.getElementById("pill");
 
-const publicSamples=[
- "How is the weather today in New York?",
- "What is the stock price of Apple today?",
- "Summarize today's top technology news headlines.",
- "What are the latest updates in AI this week?",
- "Explain what RAG is in simple words.",
- "Give me a travel plan for a 2-day trip to Boston.",
- "What is the current price of Bitcoin?",
- "Find recent updates about OpenAI products.",
- "What are the best free cloud hosting options for small apps?",
- "What is the latest NVIDIA earnings summary?"
-];
+  document.getElementById("apiInfo").textContent = API_BASE;
 
-function renderTips(){
-  chips.innerHTML="";
-  const isPublic=mode.value==="public";
-  sectionTitle.textContent=isPublic?"Public Search (Internet)":"Confidential Search (Aurora)";
-  pill.textContent=isPublic?"≤ 100 words":"Aurora-only";
-  helperText.innerHTML=isPublic
-    ?"I am putting my researcher hat on — tell me what you want to research.<br><strong>Public search:</strong> I will return results within <strong>100 words</strong>. You can go beyond these examples."
-    :"Confidential search is limited to Aurora internal data. Please stay within approved Aurora topics.";
-  (isPublic?publicSamples:confidentialSamples).forEach(t=>{
-    const d=document.createElement("div");
-    d.className="chip";
-    d.textContent=t;
-    d.onclick=()=>topic.value=t;
-    chips.appendChild(d);
-  });
-}
+  function setTopic(t){ topicEl.value=t; topicEl.focus(); }
+  function clearOutput(){ outEl.value=""; statusEl.textContent="Status: Idle"; }
 
-function trim100(t){
- const w=t.split(/\s+/);
- return w.length<=100?t:w.slice(0,100).join(" ")+" …";
-}
+  function trim100(text){
+    const w=text.trim().split(/\s+/);
+    return w.length<=100 ? text : w.slice(0,100).join(" ")+" …";
+  }
 
-async function runResearch(){
- const q=topic.value.trim();
- if(!q)return;
- status.textContent="Status: Running…";
- const isPublic=mode.value==="public";
- const r=await fetch(isPublic?PUBLIC_URL:SEARCH_URL,{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify(isPublic?{topic:q}:{query:q})
- });
- const j=await r.json();
- out.value=isPublic?trim100(j.answer||""):j.answer||"";
- status.textContent="Status: Done";
-}
+  function updateMode(){
+    if(modeEl.value==="public"){
+      modeTitle.firstChild.textContent="Public Search (Internet)";
+      pill.textContent="≤ 100 words";
+      helperText.innerHTML="I’m putting my researcher hat on — tell me what you want to research.<br/><strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.";
+      endpointEl.textContent="/public_search";
+    }else{
+      modeTitle.firstChild.textContent="Confidential Search";
+      pill.textContent="Internal docs";
+      helperText.textContent="Confidential research using internal knowledge base.";
+      endpointEl.textContent="/search";
+    }
+  }
+  updateMode();
 
-renderTips();
+  async function runResearch(){
+    const topic=topicEl.value.trim();
+    if(!topic){ outEl.value="Please enter a topic."; return; }
+
+    statusEl.textContent="Status: Running…";
+    outEl.value="Running research…";
+
+    const isPublic = modeEl.value==="public";
+    const url = isPublic ? PUBLIC_URL : SEARCH_URL;
+    const body = isPublic ? {topic} : {query:topic};
+
+    try{
+      const r=await fetch(url,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(body)
+      });
+      if(!r.ok) throw await r.text();
+      const data=await r.json();
+      const answer=data.answer||JSON.stringify(data,null,2);
+      outEl.value=isPublic ? trim100(answer) : answer;
+      statusEl.textContent="Status: Done";
+    }catch(e){
+      outEl.value="Error:\n"+e;
+      statusEl.textContent="Status: Error";
+    }
+  }
 </script>
 </body>
 </html>
