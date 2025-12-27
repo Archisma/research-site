@@ -31,11 +31,7 @@
       padding: 28px 14px;
     }
 
-    .wrap{
-      width: min(980px, 100%);
-      display:flex;
-      justify-content:center;
-    }
+    .wrap{ width: min(980px, 100%); display:flex; justify-content:center; }
 
     .card{
       width: min(760px, 100%);
@@ -138,7 +134,7 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 12px;
-      min-height: 160px;
+      min-height: 170px;
     }
 
     pre{
@@ -151,13 +147,6 @@
       font-size: 13.5px;
     }
 
-    .hint{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.55);
-      line-height: 1.4;
-    }
-
     .foot{
       margin-top: 14px;
       text-align:center;
@@ -168,6 +157,88 @@
     @media (max-width: 680px){
       .grid{ grid-template-columns: 1fr; }
     }
+
+    /* ===== Modal (Popup) ===== */
+    .modalOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 9999;
+    }
+    .modal{
+      width: min(720px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px 18px;
+    }
+    .modalTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .modalTitle{
+      margin:0;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .modalMsg{
+      margin: 10px 0 12px 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .sampleGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .chip{
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.22);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 10px;
+      font-size: 13.5px;
+      cursor:pointer;
+      text-align:left;
+      line-height: 1.25;
+    }
+    .chip:hover{
+      border-color: rgba(79,124,255,.55);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+    .modalActions{
+      display:flex;
+      justify-content:flex-end;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .btnSecondary{
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.20);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 14px;
+    }
+    .btnSecondary:hover{
+      border-color: rgba(79,124,255,.55);
+      box-shadow: 0 0 0 4px var(--focus);
+    }
+
+    @media (max-width: 720px){
+      .sampleGrid{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
@@ -177,18 +248,17 @@
       <h1>Welcome to Archisma Ghosal's Research page</h1>
       <p class="sub">Please provide the item that you need to do the research.</p>
 
-      <!-- INPUT SECTION -->
       <div class="grid">
         <div>
           <label for="topic">Topic of research</label>
-          <input id="topic" class="input" placeholder="e.g., AI agents in healthcare" />
+          <input id="topic" class="input" placeholder="e.g., Revenue by quarter in 2023" />
         </div>
 
         <div>
           <label for="mode">Category of research</label>
           <select id="mode" class="select">
-            <option value="private">Private (My documents)</option>
-            <option value="public" disabled>Public (Internet) — coming soon</option>
+            <option value="confidential">Confidential (Aurora docs)</option>
+            <option value="public">Public (Internet)</option>
           </select>
         </div>
       </div>
@@ -198,44 +268,152 @@
         <button id="clearBtn" class="btn" onclick="clearOutput()" type="button">Clear output</button>
       </div>
 
-      <!-- OUTPUT SECTION -->
-      <div id="outWrap" class="outWrap">
+      <div class="outWrap">
         <div class="outHeader">
           <span>Research Output</span>
           <span id="status" class="status">Idle</span>
         </div>
         <div class="outPanel">
           <pre id="out">Output will appear here after you run the research.</pre>
-          <div class="hint" id="hint">
-            Backend connected to: <span id="backendUrlText"></span><br/>
-            If you get an error, open the backend health check: <span id="healthUrlText"></span>
-          </div>
         </div>
       </div>
 
-      <div class="foot">Prototype UI — Connected to live backend.</div>
+      <div class="foot">
+        Confidential mode answers only from Aurora Systems documents. Public mode will be enabled with CrewAI next.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Popup Modal ===== -->
+  <div id="modalOverlay" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modalTop">
+        <div>
+          <h2 id="modalTitle" class="modalTitle">Notice</h2>
+          <div class="modalMsg" id="modalMsg"></div>
+        </div>
+        <button class="btnSecondary" onclick="closeModal()" aria-label="Close">✕</button>
+      </div>
+
+      <div class="sampleGrid" id="sampleGrid"></div>
+
+      <div class="modalActions">
+        <button class="btnSecondary" onclick="closeModal()">OK</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // ✅ LIVE BACKEND (Render)
+    // ✅ Live backend for confidential RAG
     const BACKEND_URL = "https://archisma-research-backend.onrender.com/search";
     const HEALTH_URL  = "https://archisma-research-backend.onrender.com/health";
 
-    // Show URLs on page
-    document.getElementById("backendUrlText").textContent = BACKEND_URL;
-    document.getElementById("healthUrlText").textContent  = HEALTH_URL;
+    const topicEl = document.getElementById("topic");
+    const modeEl  = document.getElementById("mode");
+    const overlay = document.getElementById("modalOverlay");
+    const modalTitleEl = document.getElementById("modalTitle");
+    const modalMsgEl   = document.getElementById("modalMsg");
+    const sampleGridEl = document.getElementById("sampleGrid");
+
+    // Confidential samples (Aurora-only) — NO "go beyond"
+    const confidentialSamples = [
+      "List the major HR policies mentioned in the Aurora policy manual.",
+      "According to the policy manual, what rules exist about remote or hybrid work?",
+      "Summarize Aurora Systems' code of conduct and disciplinary process.",
+      "What is the leave policy (PTO/sick leave) described in the policy manual?",
+      "What are the security and data handling rules for employees?",
+      "Summarize Aurora Systems' strategic pillars and long-term goals.",
+      "What are the top strategic initiatives for the next 3 years?",
+      "Show revenue by quarter for 2023 and summarize the trend.",
+      "What is the trend of R&D spend by quarter in 2023?",
+      "Compare gross margin % across 2023 quarters and summarize the trend."
+    ];
+
+    // Public samples — WITH "researcher hat" message + examples + "go beyond"
+    const publicSamples = [
+      "How is the weather today in New York?",
+      "What is the stock price of Apple today?",
+      "Summarize today's top technology news headlines.",
+      "What are the latest updates in AI this week?",
+      "Explain what RAG is in simple words.",
+      "Give me a travel plan for a 2-day trip to Boston.",
+      "What is the current price of Bitcoin?",
+      "Find recent updates about OpenAI products.",
+      "What are the best free cloud hosting options for small apps?",
+      "What is the latest NVIDIA earnings summary?"
+    ];
 
     function setStatus(text){ document.getElementById("status").textContent = text; }
-
     function clearOutput(){
       document.getElementById("out").textContent = "Output cleared.";
       setStatus("Idle");
     }
 
+    function openModal({ title, message, samples }) {
+      modalTitleEl.textContent = title;
+      modalMsgEl.textContent = message;
+
+      sampleGridEl.innerHTML = "";
+      samples.forEach((q) => {
+        const btn = document.createElement("button");
+        btn.className = "chip";
+        btn.type = "button";
+        btn.textContent = q;
+        btn.onclick = () => {
+          topicEl.value = q;
+          closeModal();
+          topicEl.focus();
+        };
+        sampleGridEl.appendChild(btn);
+      });
+
+      overlay.style.display = "flex";
+    }
+
+    function closeModal(){ overlay.style.display = "none"; }
+
+    let confidentialPopupShown = false;
+    let publicPopupShown = false;
+
+    function showConfidentialPopupOnce(){
+      if(confidentialPopupShown) return;
+      confidentialPopupShown = true;
+
+      openModal({
+        title: "Confidential Search (Aurora Systems)",
+        message: "Since I am a baby I can only do few things for Confidential search, and only give out put about Aurora Systems.",
+        samples: confidentialSamples
+      });
+    }
+
+    function showPublicPopupOnce(){
+      if(publicPopupShown) return;
+      publicPopupShown = true;
+
+      openModal({
+        title: "Public Search (Internet)",
+        message:
+          "I am putting my researcher hat on. Let me know what kind of topic you want to research.\n\n" +
+          "Since I am a baby I can do very little for Public search right now, but here are some example topics you can try.\n" +
+          "You can go beyond these examples too.",
+        samples: publicSamples
+      });
+    }
+
+    // On change show correct popup
+    modeEl.addEventListener("change", () => {
+      if(modeEl.value === "confidential") showConfidentialPopupOnce();
+      if(modeEl.value === "public") showPublicPopupOnce();
+    });
+
+    // Show confidential popup once on load
+    window.addEventListener("load", () => {
+      if(modeEl.value === "confidential") showConfidentialPopupOnce();
+    });
+
     async function runResearch(){
-      const topic = document.getElementById("topic").value.trim();
-      const mode  = document.getElementById("mode").value;
+      const topic = topicEl.value.trim();
+      const mode  = modeEl.value;
       const btn   = document.getElementById("btn");
       const out   = document.getElementById("out");
 
@@ -245,53 +423,65 @@
         return;
       }
 
-      if(mode !== "private"){
-        out.textContent = "❌ Public search is not enabled yet. Choose Private (My documents).";
-        setStatus("Idle");
+      // Confidential -> call backend
+      if(mode === "confidential"){
+        btn.disabled = true;
+        setStatus("Running...");
+        out.textContent = "Running confidential RAG search (Aurora Systems)...\nPlease wait...";
+
+        try {
+          const res = await fetch(BACKEND_URL, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({ query: topic })
+          });
+
+          if(!res.ok){
+            const text = await res.text();
+            out.textContent =
+              `❌ Backend error (${res.status})\n\n` +
+              `Response:\n${text}\n\n` +
+              `Tip: Health check: ${HEALTH_URL}`;
+            setStatus("Error");
+            return;
+          }
+
+          const data = await res.json();
+          out.textContent = data.answer ?? JSON.stringify(data, null, 2);
+          setStatus("Done");
+        } catch (e) {
+          out.textContent =
+            "❌ Could not reach the backend.\n\n" +
+            `Backend URL: ${BACKEND_URL}\n` +
+            `Health URL:  ${HEALTH_URL}\n\n` +
+            "Error:\n" + (e && e.message ? e.message : String(e));
+          setStatus("Error");
+        } finally {
+          btn.disabled = false;
+        }
         return;
       }
 
-      btn.disabled = true;
-      setStatus("Running...");
-      out.textContent = "Running research...\n\nPlease wait...";
-
-      try {
-        const res = await fetch(BACKEND_URL, {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ query: topic })
-        });
-
-        // Non-200 responses (Render/Backend error)
-        if(!res.ok){
-          const text = await res.text();
-          out.textContent =
-            `❌ Backend error (${res.status})\n\n` +
-            `URL: ${BACKEND_URL}\n\n` +
-            `Response:\n${text}\n\n` +
-            `Tip: Check health: ${HEALTH_URL}`;
-          setStatus("Error");
-          return;
-        }
-
-        const data = await res.json();
-        out.textContent = data.answer ?? JSON.stringify(data, null, 2);
-        setStatus("Done");
-      } catch (e) {
+      // Public -> not connected yet, show popup + message
+      if(mode === "public"){
+        setStatus("Info");
         out.textContent =
-          "❌ Could not reach the backend.\n\n" +
-          `Backend URL: ${BACKEND_URL}\n` +
-          `Health URL:  ${HEALTH_URL}\n\n` +
-          "Error:\n" + (e && e.message ? e.message : String(e));
-        setStatus("Error");
-      } finally {
-        btn.disabled = false;
+          "Public search is not connected yet (CrewAI is next).\n\n" +
+          "I am putting my researcher hat on — tell me what you want to research.\n" +
+          "For now, try example topics from the popup (you can go beyond them too).";
+        showPublicPopupOnce();
+        return;
       }
     }
 
-    // Press Enter in the topic box to run
-    document.getElementById("topic").addEventListener("keydown", (e) => {
+    // Enter key runs
+    topicEl.addEventListener("keydown", (e) => {
       if(e.key === "Enter") runResearch();
+    });
+
+    // Close modal if click outside
+    overlay.addEventListener("click", (e) => {
+      if(e.target === overlay) closeModal();
     });
   </script>
 </body>
