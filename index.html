@@ -39,9 +39,10 @@ body{
 .grid{
   margin-top:18px;
   display:grid;
-  grid-template-columns:1fr;
+  grid-template-columns:1.25fr .75fr;
   gap:16px;
 }
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
 
 .card{
   background:var(--panel);
@@ -128,20 +129,7 @@ textarea{
   resize:vertical;
   font-family:ui-monospace,monospace;
 }
-
-.status{
-  margin-top:10px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.footerInfo{
-  margin-top:12px;
-  font-size:13px;
-  color:var(--muted);
-  border-top:1px solid var(--border);
-  padding-top:10px;
-}
+.status{margin-top:10px;font-size:12px;color:var(--muted)}
 </style>
 </head>
 
@@ -178,28 +166,25 @@ textarea{
 
       <div class="buttons">
         <button onclick="runResearch()">Run research</button>
-        <button class="ghost" onclick="out.value=''; status.textContent='Status: Idle';">
-          Clear output
-        </button>
+        <button class="ghost" onclick="out.value=''">Clear output</button>
       </div>
 
       <label>Research Output</label>
       <textarea id="out" readonly></textarea>
-
       <div class="status" id="status">Status: Idle</div>
+    </div>
 
-      <!-- MOVED INFO HERE -->
-      <div class="footerInfo">
-        Public search uses live internet sources.  
-        Confidential search is limited to Aurora internal data.
-      </div>
+    <div class="card">
+      <h3>Info</h3>
+      <p class="helper">Public search uses live internet sources. Confidential search is Aurora-only.</p>
     </div>
   </div>
 </div>
 
 <script>
-const PUBLIC_URL="/public_search";
-const SEARCH_URL="/search";
+const API_BASE="https://archisma-research-backend.onrender.com";
+const PUBLIC_URL=API_BASE+"/public_search";
+const SEARCH_URL=API_BASE+"/search";
 
 const confidentialSamples=[
  "List the major HR policies mentioned in the Aurora policy manual.",
@@ -233,7 +218,7 @@ function renderTips(){
   sectionTitle.textContent=isPublic?"Public Search (Internet)":"Confidential Search (Aurora)";
   pill.textContent=isPublic?"≤ 100 words":"Aurora-only";
   helperText.innerHTML=isPublic
-    ?"I am putting my researcher hat on. Since I am a baby and I just started to learn, I can only give you a simple answer.<br><strong>Public search:</strong> I will return results within <strong>100 words</strong>. You can go beyond these examples."
+    ?"I am putting my researcher hat on — tell me what you want to research.<br><strong>Public search:</strong> I will return results within <strong>100 words</strong>. You can go beyond these examples."
     :"Confidential search is limited to Aurora internal data. Please stay within approved Aurora topics.";
   (isPublic?publicSamples:confidentialSamples).forEach(t=>{
     const d=document.createElement("div");
