@@ -1,434 +1,308 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Archisma Ghosal — Research AI</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Archisma Ghosal – Research</title>
 
   <style>
     :root{
-      --bg:#0b1220;
-      --text:#e9eefc;
-      --muted:#a8b3d6;
-      --border:rgba(255,255,255,.12);
-      --shadow: 0 20px 50px rgba(0,0,0,.45);
-      --radius:18px;
-      --btn1:#4f7cff;
-      --btn2:#2d4fb8;
-      --focus: rgba(79,124,255,.35);
-      --panel: rgba(255,255,255,.07);
-      --panel2: rgba(0,0,0,.18);
-      --good: rgba(79,124,255,.35);
+      --bg:#0b1020;
+      --panel:#111a33;
+      --panel-soft:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.14);
+      --text:#e9eeff;
+      --muted:#aab6d6;
+      --accent:#6aa6ff;
+      --accent-soft:rgba(106,166,255,.15);
+      --radius:16px;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 500px at 50% 0%, #142654 0%, var(--bg) 60%);
-      color: var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 28px 14px;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 10%, #17244a 0%, var(--bg) 55%),
+        linear-gradient(180deg,#0e1530,var(--bg));
     }
 
-    .wrap{ width: min(980px, 100%); display:flex; justify-content:center; }
+    .container{max-width:1200px;margin:0 auto;padding:22px}
 
-    .card{
-      width: min(760px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 26px;
-    }
-
-    h1{
-      margin: 0 0 8px 0;
-      font-size: clamp(22px, 3vw, 34px);
-      letter-spacing: .2px;
+    .hero{
       text-align:center;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:26px 18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.3);
     }
-
-    .sub{
-      margin: 0 0 22px 0;
-      color: var(--muted);
-      text-align:center;
-      line-height:1.4;
-    }
+    .hero h1{margin:0;font-size:42px}
+    .hero p{margin:10px 0 0;color:var(--muted)}
 
     .grid{
+      margin-top:18px;
       display:grid;
-      grid-template-columns: 1fr 220px;
-      gap: 12px;
-      margin-top: 10px;
+      grid-template-columns:1.25fr .75fr;
+      gap:16px;
+    }
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
     }
 
-    label{
-      display:block;
-      font-size: 13px;
-      color: var(--muted);
-      margin: 0 0 8px 2px;
-    }
-
-    .input, .select{
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+    input,select,textarea{
       width:100%;
-      background: rgba(0,0,0,.25);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 12px 12px;
-      font-size: 16px;
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
       outline:none;
     }
-
-    .input:focus, .select:focus{
-      border-color: rgba(79,124,255,.6);
-      box-shadow: 0 0 0 4px var(--focus);
+    input:focus,select:focus,textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
     }
 
-    .actions{
-      display:flex;
-      justify-content:center;
-      margin-top: 14px;
-      gap: 10px;
-      flex-wrap: wrap;
+    .row{display:grid;grid-template-columns:1fr 300px;gap:12px}
+    @media(max-width:700px){.row{grid-template-columns:1fr}}
+
+    .section{
+      margin-top:12px;
+      padding:14px;
+      background:var(--panel-soft);
+      border:1px solid var(--border);
+      border-radius:14px;
+    }
+    .section h2{margin:0;font-size:18px}
+
+    .pill{
+      display:inline-block;
+      margin-left:8px;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid var(--border);
+      color:var(--muted);
     }
 
-    .btn{
-      border:0;
-      padding: 12px 18px;
-      border-radius: 12px;
-      color:#fff;
-      font-size: 16px;
-      cursor:pointer;
-      background: linear-gradient(180deg, var(--btn1), var(--btn2));
-      box-shadow: 0 10px 25px rgba(79,124,255,.25);
-      min-width: 160px;
-    }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
-
-    /* INLINE HELPER PANEL (replaces popup) */
     .helper{
-      margin-top: 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.12));
-      border-radius: 16px;
-      padding: 14px;
+      margin-top:8px;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.45;
     }
 
-    .helperTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .helperTitle{
-      margin:0;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: .2px;
-    }
-
-    .helperBadge{
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.20);
-      color: rgba(255,255,255,.85);
-      white-space: nowrap;
-    }
-
-    .helperMsg{
-      margin: 0 0 12px 0;
-      color: rgba(255,255,255,.80);
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .sampleGrid{
+    .chips{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
     }
+    @media(max-width:520px){.chips{grid-template-columns:1fr}}
 
     .chip{
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 10px;
-      font-size: 13.5px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--border);
       cursor:pointer;
-      text-align:left;
-      line-height: 1.25;
+      transition:.12s ease;
     }
     .chip:hover{
-      border-color: rgba(79,124,255,.55);
-      box-shadow: 0 0 0 4px var(--focus);
+      background:var(--accent-soft);
+      border-color:var(--accent);
     }
 
-    .outWrap{ margin-top: 18px; }
-    .outHeader{
-      margin: 0 0 8px 2px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
+    .buttons{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap:12px;
+      justify-content:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    button{
+      min-width:170px;
+      padding:12px 18px;
+      border-radius:14px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      background:linear-gradient(180deg,#7bb1ff,#5a90ff);
+      color:#08142f;
+    }
+    .ghost{
+      background:rgba(255,255,255,.07);
+      color:var(--text);
+      border:1px solid var(--border);
+    }
+
+    textarea{
+      margin-top:10px;
+      min-height:200px;
+      resize:vertical;
+      line-height:1.5;
+      font-family:ui-monospace,monospace;
     }
 
     .status{
-      font-size: 12px;
-      color: rgba(255,255,255,.7);
-      padding: 6px 10px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(0,0,0,.18);
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
     }
 
-    .outPanel{
-      background: rgba(0,0,0,.28);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      min-height: 170px;
-    }
-
-    pre{
-      margin:0;
-      white-space: pre-wrap;
-      overflow:auto;
-      line-height: 1.45;
-      color: var(--text);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 13.5px;
-    }
-
-    .foot{
-      margin-top: 14px;
-      text-align:center;
-      color: rgba(255,255,255,.55);
-      font-size: 12px;
-    }
-
-    @media (max-width: 680px){
-      .grid{ grid-template-columns: 1fr; }
-      .sampleGrid{ grid-template-columns: 1fr; }
-    }
+    .mono{font-family:ui-monospace,monospace}
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+<div class="container">
+
+  <div class="hero">
+    <h1>Welcome to Archisma Ghosal's Research page</h1>
+    <p>Please provide the item that you need to do the research.</p>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
     <div class="card">
-      <h1>Welcome to Archisma Ghosal's Research page</h1>
-      <p class="sub">Please provide the item that you need to do the research.</p>
-
-      <div class="grid">
+      <div class="row">
         <div>
-          <label for="topic">Topic of research</label>
-          <input id="topic" class="input" placeholder="e.g., Revenue by quarter in 2023" />
+          <label>Topic of research</label>
+          <input id="topic" placeholder="e.g. Explain what RAG is in simple words"/>
         </div>
-
         <div>
-          <label for="mode">Category of research</label>
-          <select id="mode" class="select">
-            <option value="confidential">Confidential (Aurora docs)</option>
+          <label>Category of research</label>
+          <select id="mode" onchange="updateMode()">
             <option value="public">Public (Internet)</option>
+            <option value="confidential">Confidential (Internal)</option>
           </select>
         </div>
       </div>
 
-      <!-- INLINE HELPER (replaces popup) -->
-      <div id="helper" class="helper">
-        <div class="helperTop">
-          <div>
-            <p id="helperTitle" class="helperTitle">Confidential Search (Aurora Systems)</p>
-          </div>
-          <span id="helperBadge" class="helperBadge">Instant tips</span>
-        </div>
+      <div class="section">
+        <h2 id="modeTitle">Public Search (Internet)
+          <span class="pill" id="pill">≤ 100 words</span>
+        </h2>
 
-        <p id="helperMsg" class="helperMsg">
-          Since I am a baby I can only do few things for Confidential search, and only give out put about Aurora Systems.
+        <p class="helper" id="helperText">
+          I’m putting my researcher hat on — tell me what you want to research.<br/>
+          <strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.
         </p>
 
-        <div id="sampleGrid" class="sampleGrid"></div>
-      </div>
-
-      <div class="actions">
-        <button id="btn" class="btn" onclick="runResearch()">Run research</button>
-        <button id="clearBtn" class="btn" onclick="clearOutput()" type="button">Clear output</button>
-      </div>
-
-      <div class="outWrap">
-        <div class="outHeader">
-          <span>Research Output</span>
-          <span id="status" class="status">Idle</span>
-        </div>
-        <div class="outPanel">
-          <pre id="out">Output will appear here after you run the research.</pre>
+        <div class="chips">
+          <div class="chip" onclick="setTopic('Explain what RAG is in simple words')">Explain RAG simply</div>
+          <div class="chip" onclick="setTopic('What are the latest AI updates this week?')">Latest AI updates</div>
+          <div class="chip" onclick="setTopic('What is the stock price of Apple today?')">Apple stock price</div>
+          <div class="chip" onclick="setTopic('What are the best free cloud hosting options?')">Free cloud hosting</div>
+          <div class="chip" onclick="setTopic('Summarize today’s tech news headlines')">Tech news summary</div>
+          <div class="chip" onclick="setTopic('Give me a 2-day Boston travel plan')">Boston travel plan</div>
         </div>
       </div>
 
-      <div class="foot">Confidential mode answers only from Aurora Systems documents. Public mode will be enabled with CrewAI next.</div>
+      <div class="buttons">
+        <button onclick="runResearch()">Run research</button>
+        <button class="ghost" onclick="clearOutput()">Clear output</button>
+      </div>
+
+      <label style="margin-top:14px">Research Output</label>
+      <textarea id="out" readonly></textarea>
+
+      <div class="status">
+        <span id="status">Status: Idle</span>
+        <span class="mono" id="endpoint"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+      <h3>Info</h3>
+      <p class="helper">
+        Backend is hosted on Render and public search uses live internet sources.
+      </p>
+      <p class="mono" id="apiInfo"></p>
     </div>
   </div>
+</div>
 
-  <script>
-    const BACKEND_URL = "https://archisma-research-backend.onrender.com/search";
-    const HEALTH_URL  = "https://archisma-research-backend.onrender.com/health";
+<script>
+  const API_BASE = "https://archisma-research-backend.onrender.com";
+  const PUBLIC_URL = API_BASE + "/public_search";
+  const SEARCH_URL = API_BASE + "/search";
 
-    const topicEl = document.getElementById("topic");
-    const modeEl  = document.getElementById("mode");
-    const helperTitleEl = document.getElementById("helperTitle");
-    const helperMsgEl = document.getElementById("helperMsg");
-    const sampleGridEl = document.getElementById("sampleGrid");
+  const topicEl = document.getElementById("topic");
+  const outEl = document.getElementById("out");
+  const statusEl = document.getElementById("status");
+  const modeEl = document.getElementById("mode");
+  const endpointEl = document.getElementById("endpoint");
+  const modeTitle = document.getElementById("modeTitle");
+  const helperText = document.getElementById("helperText");
+  const pill = document.getElementById("pill");
 
-    const confidentialSamples = [
-      "List the major HR policies mentioned in the Aurora policy manual.",
-      "According to the policy manual, what rules exist about remote or hybrid work?",
-      "Summarize Aurora Systems' code of conduct and disciplinary process.",
-      "What is the leave policy (PTO/sick leave) described in the policy manual?",
-      "What are the security and data handling rules for employees?",
-      "Summarize Aurora Systems' strategic pillars and long-term goals.",
-      "What are the top strategic initiatives for the next 3 years?",
-      "Show revenue by quarter for 2023 and summarize the trend.",
-      "What is the trend of R&D spend by quarter in 2023?",
-      "Compare gross margin % across 2023 quarters and summarize the trend."
-    ];
+  document.getElementById("apiInfo").textContent = API_BASE;
 
-    const publicSamples = [
-      "How is the weather today in New York?",
-      "What is the stock price of Apple today?",
-      "Summarize today's top technology news headlines.",
-      "What are the latest updates in AI this week?",
-      "Explain what RAG is in simple words.",
-      "Give me a travel plan for a 2-day trip to Boston.",
-      "What is the current price of Bitcoin?",
-      "Find recent updates about OpenAI products.",
-      "What are the best free cloud hosting options for small apps?",
-      "What is the latest NVIDIA earnings summary?"
-    ];
+  function setTopic(t){ topicEl.value=t; topicEl.focus(); }
+  function clearOutput(){ outEl.value=""; statusEl.textContent="Status: Idle"; }
 
-    function setStatus(text){ document.getElementById("status").textContent = text; }
-    function clearOutput(){
-      document.getElementById("out").textContent = "Output cleared.";
-      setStatus("Idle");
+  function trim100(text){
+    const w=text.trim().split(/\s+/);
+    return w.length<=100 ? text : w.slice(0,100).join(" ")+" …";
+  }
+
+  function updateMode(){
+    if(modeEl.value==="public"){
+      modeTitle.firstChild.textContent="Public Search (Internet)";
+      pill.textContent="≤ 100 words";
+      helperText.innerHTML="I’m putting my researcher hat on — tell me what you want to research.<br/><strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.";
+      endpointEl.textContent="/public_search";
+    }else{
+      modeTitle.firstChild.textContent="Confidential Search";
+      pill.textContent="Internal docs";
+      helperText.textContent="Confidential research using internal knowledge base.";
+      endpointEl.textContent="/search";
     }
+  }
+  updateMode();
 
-    function renderSamples(samples){
-      sampleGridEl.innerHTML = "";
-      samples.forEach((q) => {
-        const btn = document.createElement("button");
-        btn.className = "chip";
-        btn.type = "button";
-        btn.textContent = q;
-        btn.onclick = () => {
-          topicEl.value = q;
-          topicEl.focus();
-        };
-        sampleGridEl.appendChild(btn);
+  async function runResearch(){
+    const topic=topicEl.value.trim();
+    if(!topic){ outEl.value="Please enter a topic."; return; }
+
+    statusEl.textContent="Status: Running…";
+    outEl.value="Running research…";
+
+    const isPublic = modeEl.value==="public";
+    const url = isPublic ? PUBLIC_URL : SEARCH_URL;
+    const body = isPublic ? {topic} : {query:topic};
+
+    try{
+      const r=await fetch(url,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(body)
       });
+      if(!r.ok) throw await r.text();
+      const data=await r.json();
+      const answer=data.answer||JSON.stringify(data,null,2);
+      outEl.value=isPublic ? trim100(answer) : answer;
+      statusEl.textContent="Status: Done";
+    }catch(e){
+      outEl.value="Error:\n"+e;
+      statusEl.textContent="Status: Error";
     }
-
-    function updateHelperForMode(){
-      const mode = modeEl.value;
-
-      if(mode === "confidential"){
-        helperTitleEl.textContent = "Confidential Search (Aurora Systems)";
-        helperMsgEl.textContent =
-          "Since I am a baby I can only do few things for Confidential search, and only give out put about Aurora Systems.";
-        renderSamples(confidentialSamples);
-        return;
-      }
-
-      // public
-      helperTitleEl.textContent = "Public Search (Internet)";
-      helperMsgEl.textContent =
-        "I am putting my researcher hat on. Let me know what kind of topic you want to research.\n\n" +
-        "Since I am a baby I can do very little for Public search right now, but here are some example topics you can try.\n" +
-        "You can go beyond these examples too.";
-      renderSamples(publicSamples);
-    }
-
-    // Update instantly (no late popup anymore)
-    modeEl.addEventListener("change", updateHelperForMode);
-
-    // init
-    window.addEventListener("load", () => {
-      updateHelperForMode();
-    });
-
-    async function runResearch(){
-      const topic = topicEl.value.trim();
-      const mode  = modeEl.value;
-      const btn   = document.getElementById("btn");
-      const out   = document.getElementById("out");
-
-      if(!topic){
-        out.textContent = "❌ Please enter a Topic of research.";
-        setStatus("Idle");
-        return;
-      }
-
-      if(mode === "confidential"){
-        btn.disabled = true;
-        setStatus("Running...");
-        out.textContent = "Running confidential RAG search (Aurora Systems)...\nPlease wait...";
-
-        try {
-          const res = await fetch(BACKEND_URL, {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({ query: topic })
-          });
-
-          if(!res.ok){
-            const text = await res.text();
-            out.textContent =
-              `❌ Backend error (${res.status})\n\n` +
-              `Response:\n${text}\n\n` +
-              `Tip: Health check: ${HEALTH_URL}`;
-            setStatus("Error");
-            return;
-          }
-
-          const data = await res.json();
-          out.textContent = data.answer ?? JSON.stringify(data, null, 2);
-          setStatus("Done");
-        } catch (e) {
-          out.textContent =
-            "❌ Could not reach the backend.\n\n" +
-            `Backend URL: ${BACKEND_URL}\n` +
-            `Health URL:  ${HEALTH_URL}\n\n` +
-            "Error:\n" + (e && e.message ? e.message : String(e));
-          setStatus("Error");
-        } finally {
-          btn.disabled = false;
-        }
-        return;
-      }
-
-      // Public not connected yet
-      setStatus("Info");
-      out.textContent =
-        "Public search is not connected yet (CrewAI is next).\n\n" +
-        "I am putting my researcher hat on — tell me what you want to research.\n" +
-        "For now, try example topics from the helper panel (you can go beyond them too).";
-    }
-
-    topicEl.addEventListener("keydown", (e) => {
-      if(e.key === "Enter") runResearch();
-    });
-  </script>
+  }
+</script>
 </body>
 </html>
