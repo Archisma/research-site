@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Archisma Ghosal – Research</title>
+  <title>Aurora Systems Research Facility</title>
 
   <style>
     :root{
@@ -16,6 +16,8 @@
       --accent:#6aa6ff;
       --accent-soft:rgba(106,166,255,.15);
       --radius:16px;
+      --danger:#ff6a6a;
+      --ok:#79ffa6;
     }
 
     *{box-sizing:border-box}
@@ -38,8 +40,11 @@
       padding:26px 18px;
       box-shadow:0 20px 60px rgba(0,0,0,.3);
     }
-    .hero h1{margin:0;font-size:42px}
+    .hero h1{margin:0;font-size:40px}
     .hero p{margin:10px 0 0;color:var(--muted)}
+    .hero .sub{margin-top:8px;font-size:13px;color:var(--muted)}
+    .hero .sub a{color:var(--accent);text-decoration:none}
+    .hero .sub a:hover{text-decoration:underline}
 
     .grid{
       margin-top:18px;
@@ -54,6 +59,33 @@
       border-radius:var(--radius);
       padding:16px;
       box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+
+    /* Tabs */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:14px;
+    }
+    .tab{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:var(--muted);
+      cursor:pointer;
+      user-select:none;
+      transition:.12s ease;
+      font-weight:700;
+      font-size:13px;
+    }
+    .tab:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--text)}
+    .tab.active{
+      border-color:var(--accent);
+      background:linear-gradient(180deg,#7bb1ff,#5a90ff);
+      color:#08142f;
     }
 
     label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
@@ -134,7 +166,7 @@
       padding:12px 18px;
       border-radius:14px;
       border:none;
-      font-weight:700;
+      font-weight:800;
       cursor:pointer;
       background:linear-gradient(180deg,#7bb1ff,#5a90ff);
       color:#08142f;
@@ -144,10 +176,14 @@
       color:var(--text);
       border:1px solid var(--border);
     }
+    .dangerBtn{
+      background:linear-gradient(180deg,#ff9a9a,#ff6a6a);
+      color:#2a0b0b;
+    }
 
     textarea{
       margin-top:10px;
-      min-height:200px;
+      min-height:220px;
       resize:vertical;
       line-height:1.5;
       font-family:ui-monospace,monospace;
@@ -173,6 +209,31 @@
     }
 
     .mono{font-family:ui-monospace,monospace}
+
+    /* Hide/show panels */
+    .panel{display:none}
+    .panel.active{display:block}
+
+    .badgeOk{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(121,255,166,.35);
+      background:rgba(121,255,166,.10);
+      color:var(--ok);
+      font-size:12px;
+      margin-left:8px;
+    }
+    .badgeWarn{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,106,106,.35);
+      background:rgba(255,106,106,.10);
+      color:var(--danger);
+      font-size:12px;
+      margin-left:8px;
+    }
   </style>
 </head>
 
@@ -180,67 +241,205 @@
 <div class="container">
 
   <div class="hero">
-    <h1>Welcome to Archisma Ghosal's Research page</h1>
-    <p>Please provide the item that you need to do the research.</p>
+    <h1>Aurora Systems Research Facility</h1>
+    <p>Unified Intelligence Hub: Research • Lineage • Production Issue Resolution</p>
+    <div class="sub">
+      <span class="mono">Author:</span> Okjishmagoshal &nbsp;•&nbsp;
+      <span class="mono">Contact:</span> (add in footer)
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Aurora Tabs">
+      <div class="tab active" id="tabResearch" onclick="switchTab('research')">Research</div>
+      <div class="tab" id="tabLineage" onclick="switchTab('lineage')">Lineage Intelligence</div>
+      <div class="tab" id="tabProd" onclick="switchTab('prod')">Production Issue Intelligence</div>
+    </div>
   </div>
 
   <div class="grid">
-    <!-- MAIN -->
     <div class="card">
-      <div class="row">
-        <div>
-          <label>Topic of research</label>
-          <input id="topic" placeholder="e.g. Explain what RAG is in simple words"/>
+
+      <!-- ===================== RESEARCH PANEL ===================== -->
+      <div class="panel active" id="panelResearch">
+        <div class="row">
+          <div>
+            <label>Topic of research</label>
+            <input id="topic" placeholder="e.g. Explain what RAG is in simple words"/>
+          </div>
+          <div>
+            <label>Category of research</label>
+            <select id="mode" onchange="updateMode()">
+              <option value="public">Public (Internet)</option>
+              <option value="confidential">Confidential (Internal)</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label>Category of research</label>
-          <select id="mode" onchange="updateMode()">
-            <option value="public">Public (Internet)</option>
-            <option value="confidential">Confidential (Internal)</option>
-          </select>
+
+        <div class="section">
+          <h2 id="modeTitle">Public Search (Internet)
+            <span class="pill" id="pill">≤ 100 words</span>
+          </h2>
+
+          <p class="helper" id="helperText">
+            I’m putting my researcher hat on — tell me what you want to research.<br/>
+            <strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.
+          </p>
+
+          <div class="chips" id="chips"></div>
+        </div>
+
+        <div class="buttons">
+          <button onclick="runResearch()">Run research</button>
+          <button class="ghost" onclick="clearOutput('out','status','endpoint')">Clear output</button>
+        </div>
+
+        <label style="margin-top:14px">Output</label>
+        <textarea id="out" readonly></textarea>
+
+        <div class="status">
+          <span id="status">Status: Idle</span>
+          <span class="mono" id="endpoint"></span>
+        </div>
+
+        <div class="footerInfo">
+          Public search uses live internet sources. Confidential search is limited to Aurora internal data.
         </div>
       </div>
 
-      <div class="section">
-        <h2 id="modeTitle">Public Search (Internet)
-          <span class="pill" id="pill">≤ 100 words</span>
-        </h2>
+      <!-- ===================== LINEAGE PANEL ===================== -->
+      <div class="panel" id="panelLineage">
+        <div class="section">
+          <h2>Lineage Intelligence <span class="badgeOk">Internal</span></h2>
+          <p class="helper">
+            Ask for end-to-end data lineage (source → transformations → targets).<br/>
+            Example: “Where does Daily Active Users come from?” or “Show lineage for login_events.user_id”.
+          </p>
+        </div>
 
-        <p class="helper" id="helperText">
-          I’m putting my researcher hat on — tell me what you want to research.<br/>
-          <strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.
-        </p>
+        <label>Field / Table / Feed / Metric</label>
+        <input id="lineageQuery" placeholder="e.g. daily_active_users or login_events.user_id"/>
 
-        <div class="chips" id="chips"></div>
+        <div class="section">
+          <h2>Quick examples</h2>
+          <div class="chips" id="lineageChips"></div>
+        </div>
+
+        <div class="buttons">
+          <button onclick="runLineage()">Run lineage</button>
+          <button class="ghost" onclick="clearOutput('lineageOut','lineageStatus','lineageEndpoint')">Clear output</button>
+        </div>
+
+        <label style="margin-top:14px">Lineage Output</label>
+        <textarea id="lineageOut" readonly></textarea>
+
+        <div class="status">
+          <span id="lineageStatus">Status: Idle</span>
+          <span class="mono" id="lineageEndpoint"></span>
+        </div>
+
+        <div class="footerInfo">
+          Lineage is generated from internal mapping artifacts stored in Git (feeds, mappings, schemas, transformations).
+        </div>
       </div>
 
-      <div class="buttons">
-        <button onclick="runResearch()">Run research</button>
-        <button class="ghost" onclick="clearOutput()">Clear output</button>
+      <!-- ===================== PROD PANEL ===================== -->
+      <div class="panel" id="panelProd">
+        <div class="section">
+          <h2>Production Issue Intelligence <span class="badgeWarn">Restricted</span></h2>
+          <p class="helper">
+            Intended for in-house support workflows.<br/>
+            Private-first lookup searches historical RCAs/tickets; if no match is found, it can fall back to public research.
+          </p>
+        </div>
+
+        <!-- Demo Login Gate (no credentials displayed in UI) -->
+        <div class="section" id="prodGate">
+          <h2>In-house Login (Demo)</h2>
+          <p class="helper">
+            This demo uses a simple login gate. Credentials are configured in the code (not shown in the UI).
+            For production, enforce access control on the backend (SSO/OAuth/Cloudflare Access).
+          </p>
+
+          <div class="row" style="grid-template-columns:1fr 1fr 220px">
+            <div>
+              <label>Username</label>
+              <input id="prodUser" placeholder="Enter username"/>
+            </div>
+            <div>
+              <label>Password</label>
+              <input id="prodPass" type="password" placeholder="Enter password"/>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:10px">
+              <button class="dangerBtn" onclick="loginProd()">Login</button>
+              <button class="ghost" onclick="logoutProd()">Logout</button>
+            </div>
+          </div>
+
+          <div class="status">
+            <span id="prodGateStatus">Status: Locked</span>
+            <span class="mono">Demo-only (client-side)</span>
+          </div>
+        </div>
+
+        <div id="prodMain" style="display:none">
+          <label>Paste error / stack trace / logs</label>
+          <textarea id="prodInput" placeholder="e.g. Traceback (most recent call last): ..."></textarea>
+
+          <div class="section">
+            <h2>Quick examples</h2>
+            <div class="chips" id="prodChips"></div>
+          </div>
+
+          <div class="buttons">
+            <button onclick="runProdIssue()">Analyze issue</button>
+            <button class="ghost" onclick="clearOutput('prodOut','prodStatus','prodEndpoint')">Clear output</button>
+          </div>
+
+          <label style="margin-top:14px">Resolution Output</label>
+          <textarea id="prodOut" readonly></textarea>
+
+          <div class="status">
+            <span id="prodStatus">Status: Idle</span>
+            <span class="mono" id="prodEndpoint"></span>
+          </div>
+        </div>
+
+        <div class="footerInfo">
+          Aurora Systems is a fictional/dummy dataset used for demo. Replace artifacts, mappings, and incident history with any organization’s data.
+        </div>
       </div>
 
-      <label style="margin-top:14px">Research Output</label>
-      <textarea id="out" readonly></textarea>
-
-      <div class="status">
-        <span id="status">Status: Idle</span>
-        <span class="mono" id="endpoint"></span>
+      <!-- Footer -->
+      <div class="footerInfo" style="margin-top:16px">
+        Built by <strong>Okjishmagoshal</strong>. Aurora Systems is fictional and used only for demonstration.
       </div>
 
-      <!-- INFO moved below, and NO backend URL exposed -->
-      <div class="footerInfo" id="footerInfo">
-        Public search uses live internet sources. Confidential search is limited to Aurora internal data.
-      </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Keep API_BASE in code for fetch, but do not display it anywhere in UI.
-  const API_BASE   = "https://archisma-research-backend.onrender.com";
+  /**
+   * REQUIRED: Set your backend base URL
+   * Example: https://aurora-research-backend.onrender.com
+   */
+  const API_BASE = "https://YOUR-NEW-BACKEND.onrender.com";
+
+  // Existing backend endpoints (already in your FastAPI app)
   const PUBLIC_URL = API_BASE + "/public_search";
   const SEARCH_URL = API_BASE + "/search";
 
+  // New endpoints (to implement later)
+  const LINEAGE_URL    = API_BASE + "/lineage";
+  const PROD_ISSUE_URL = API_BASE + "/prod_issue";
+
+  // ===================== DEMO LOGIN CREDENTIALS =====================
+  // Replace these two values before deploying.
+  // NOTE: This is NOT real security. It is a demo gate only.
+  const DEMO_PROD_USER = "CHANGE_ME_USERNAME";
+  const DEMO_PROD_PASS = "CHANGE_ME_PASSWORD";
+  // ================================================================
+
+  // Elements: Research
   const topicEl     = document.getElementById("topic");
   const outEl       = document.getElementById("out");
   const statusEl    = document.getElementById("status");
@@ -251,7 +450,77 @@
   const pillEl      = document.getElementById("pill");
   const chipsEl     = document.getElementById("chips");
 
-  // Confidential samples (Aurora-only) — NO "go beyond"
+  // Elements: Lineage
+  const lineageQueryEl  = document.getElementById("lineageQuery");
+  const lineageOutEl    = document.getElementById("lineageOut");
+  const lineageStatusEl = document.getElementById("lineageStatus");
+  const lineageEndpointEl = document.getElementById("lineageEndpoint");
+  const lineageChipsEl  = document.getElementById("lineageChips");
+
+  // Elements: Prod
+  const prodGateEl = document.getElementById("prodGate");
+  const prodMainEl = document.getElementById("prodMain");
+  const prodGateStatusEl = document.getElementById("prodGateStatus");
+  const prodUserEl  = document.getElementById("prodUser");
+  const prodPassEl  = document.getElementById("prodPass");
+  const prodInputEl = document.getElementById("prodInput");
+  const prodOutEl   = document.getElementById("prodOut");
+  const prodStatusEl= document.getElementById("prodStatus");
+  const prodEndpointEl = document.getElementById("prodEndpoint");
+  const prodChipsEl = document.getElementById("prodChips");
+
+  // Tabs
+  const tabResearch = document.getElementById("tabResearch");
+  const tabLineage  = document.getElementById("tabLineage");
+  const tabProd     = document.getElementById("tabProd");
+  const panelResearch = document.getElementById("panelResearch");
+  const panelLineage  = document.getElementById("panelLineage");
+  const panelProd     = document.getElementById("panelProd");
+
+  function switchTab(which){
+    tabResearch.classList.toggle("active", which==="research");
+    tabLineage.classList.toggle("active", which==="lineage");
+    tabProd.classList.toggle("active", which==="prod");
+
+    panelResearch.classList.toggle("active", which==="research");
+    panelLineage.classList.toggle("active", which==="lineage");
+    panelProd.classList.toggle("active", which==="prod");
+
+    if(which==="research") endpointEl.textContent = (modeEl.value==="public" ? "/public_search" : "/search");
+    if(which==="lineage") lineageEndpointEl.textContent = "/lineage";
+    if(which==="prod") prodEndpointEl.textContent = "/prod_issue";
+  }
+
+  function setTopic(el, t){ el.value=t; el.focus(); }
+
+  function clearOutput(outId, statusId, endpointId){
+    const out = document.getElementById(outId);
+    const st  = document.getElementById(statusId);
+    const ep  = document.getElementById(endpointId);
+    if(out) out.value = "";
+    if(st)  st.textContent = "Status: Idle";
+    if(ep && ep.id==="endpoint") ep.textContent = (modeEl.value==="public" ? "/public_search" : "/search");
+  }
+
+  function trim100(text){
+    const cleaned = String(text || "").trim();
+    if(!cleaned) return "";
+    const w = cleaned.split(/\s+/);
+    return w.length<=100 ? cleaned : w.slice(0,100).join(" ")+" …";
+  }
+
+  function renderChips(list, parentEl, targetInputEl){
+    parentEl.innerHTML = "";
+    list.forEach(t=>{
+      const d=document.createElement("div");
+      d.className="chip";
+      d.textContent=t;
+      d.onclick=()=>setTopic(targetInputEl, t);
+      parentEl.appendChild(d);
+    });
+  }
+
+  // Samples
   const confidentialSamples = [
     "List the major HR policies mentioned in the Aurora policy manual.",
     "According to the policy manual, what rules exist about remote or hybrid work?",
@@ -265,55 +534,42 @@
     "Compare gross margin % across 2023 quarters and summarize the trend."
   ];
 
-  // Public samples — WITH "researcher hat" message + examples + "go beyond"
   const publicSamples = [
-    "How is the weather today in New York?",
-    "What is the stock price of Apple today?",
-    "Summarize today's top technology news headlines.",
-    "What are the latest updates in AI this week?",
     "Explain what RAG is in simple words.",
-    "Give me a travel plan for a 2-day trip to Boston.",
-    "What is the current price of Bitcoin?",
-    "Find recent updates about OpenAI products.",
     "What are the best free cloud hosting options for small apps?",
-    "What is the latest NVIDIA earnings summary?"
+    "Summarize recent technology headlines.",
+    "Give me a 2-day trip plan for Boston.",
+    "Find recent updates about OpenAI products."
   ];
 
-  function setTopic(t){ topicEl.value=t; topicEl.focus(); }
-  function clearOutput(){ outEl.value=""; statusEl.textContent="Status: Idle"; }
+  const lineageSamples = [
+    "Show lineage for daily_active_users",
+    "Where does the Daily Active Users report come from?",
+    "What upstream feeds impact login_events.user_id?",
+    "Which tables are downstream of login_events?",
+    "Show source → transformation → target for user_login_count"
+  ];
 
-  function trim100(text){
-    const cleaned = String(text || "").trim();
-    if(!cleaned) return "";
-    const w = cleaned.split(/\s+/);
-    return w.length<=100 ? cleaned : w.slice(0,100).join(" ")+" …";
-  }
-
-  function renderChips(list){
-    chipsEl.innerHTML = "";
-    list.forEach(t=>{
-      const d=document.createElement("div");
-      d.className="chip";
-      d.textContent=t;
-      d.onclick=()=>setTopic(t);
-      chipsEl.appendChild(d);
-    });
-  }
+  const prodSamples = [
+    "Traceback (most recent call last):\n  File \"report_job.py\", line 78, in <module>\n    df = df.merge(users, on=\"user_id\")\nKeyError: 'user_id'",
+    "ERROR: Load failed due to NOT NULL constraint violation on table aurora_daily_metrics",
+    "TimeoutError: ETL job exceeded maximum runtime threshold",
+    "ValueError: cannot convert float NaN to integer",
+    "DatabaseError: deadlock detected while updating aurora_report_table"
+  ];
 
   function updateMode(){
     const isPublic = modeEl.value==="public";
 
     if(isPublic){
-      // Keep the first text node update safe:
       modeTitleEl.childNodes[0].textContent = "Public Search (Internet) ";
       pillEl.textContent = "≤ 100 words";
       helperTextEl.innerHTML =
         "I’m putting my researcher hat on — tell me what you want to research.<br/>" +
         "Also: I’m a tiny baby-researcher 👶🔎 so I’ll keep it simple and short.<br/>" +
-        "<strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>. " +
-        "You can go beyond these examples.";
+        "<strong>Public search:</strong> I’ll return a result within <strong>100 words</strong>.";
       endpointEl.textContent = "/public_search";
-      renderChips(publicSamples);
+      renderChips(publicSamples, chipsEl, topicEl);
     } else {
       modeTitleEl.childNodes[0].textContent = "Confidential Search ";
       pillEl.textContent = "Internal docs";
@@ -322,11 +578,16 @@
         "Also: I’m a tiny baby-researcher 👶📄 so I’ll keep it simple and focused.<br/>" +
         "<strong>Note:</strong> Aurora-only topics — no public web searching in this mode.";
       endpointEl.textContent = "/search";
-      renderChips(confidentialSamples);
+      renderChips(confidentialSamples, chipsEl, topicEl);
     }
   }
 
+  // Initialize chips and endpoints
   updateMode();
+  renderChips(lineageSamples, lineageChipsEl, lineageQueryEl);
+  renderChips(prodSamples, prodChipsEl, prodInputEl);
+  lineageEndpointEl.textContent = "/lineage";
+  prodEndpointEl.textContent = "/prod_issue";
 
   async function runResearch(){
     const topic = topicEl.value.trim();
@@ -348,7 +609,7 @@
 
       if(!r.ok){
         const text = await r.text();
-        throw text || ("HTTP " + r.status);
+        throw new Error(text || ("HTTP " + r.status));
       }
 
       const data = await r.json();
@@ -361,6 +622,110 @@
       statusEl.textContent="Status: Error";
     }
   }
+
+  async function runLineage(){
+    const q = lineageQueryEl.value.trim();
+    if(!q){ lineageOutEl.value="Please enter a field/table/feed/metric."; return; }
+
+    lineageStatusEl.textContent="Status: Running…";
+    lineageOutEl.value="Running lineage…";
+
+    try{
+      const r=await fetch(LINEAGE_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ query: q })
+      });
+
+      if(!r.ok){
+        const text = await r.text();
+        throw new Error(text || ("HTTP " + r.status));
+      }
+
+      const data = await r.json();
+      lineageOutEl.value = data.answer || JSON.stringify(data,null,2);
+      lineageStatusEl.textContent="Status: Done";
+    }catch(e){
+      lineageOutEl.value =
+        "Lineage endpoint not ready yet OR backend returned an error.\n\n" +
+        "Expected endpoint: POST " + LINEAGE_URL + "\n\n" +
+        "Error:\n" + (e && e.message ? e.message : String(e));
+      lineageStatusEl.textContent="Status: Error";
+    }
+  }
+
+  // ===================== Production Login Gate (DEMO ONLY) =====================
+  const PROD_SESSION_KEY = "aurora_prod_unlocked_session_v1";
+
+  function setProdUnlockedUI(isUnlocked){
+    if(isUnlocked){
+      prodGateEl.style.display = "none";
+      prodMainEl.style.display = "block";
+      prodGateStatusEl.textContent = "Status: Unlocked (session)";
+    } else {
+      prodGateEl.style.display = "block";
+      prodMainEl.style.display = "none";
+      prodGateStatusEl.textContent = "Status: Locked";
+      if(prodUserEl) prodUserEl.value = "";
+      if(prodPassEl) prodPassEl.value = "";
+    }
+  }
+
+  function loginProd(){
+    const u = (prodUserEl.value || "").trim();
+    const p = (prodPassEl.value || "").trim();
+
+    // Demo check
+    if(u === DEMO_PROD_USER && p === DEMO_PROD_PASS){
+      sessionStorage.setItem(PROD_SESSION_KEY, "true");
+      setProdUnlockedUI(true);
+    } else {
+      sessionStorage.removeItem(PROD_SESSION_KEY);
+      prodGateStatusEl.textContent = "Status: Locked (invalid credentials)";
+    }
+  }
+
+  function logoutProd(){
+    sessionStorage.removeItem(PROD_SESSION_KEY);
+    setProdUnlockedUI(false);
+  }
+
+  // Restore state on load
+  setProdUnlockedUI(sessionStorage.getItem(PROD_SESSION_KEY) === "true");
+
+  async function runProdIssue(){
+    const text = (prodInputEl.value || "").trim();
+    if(!text){ prodOutEl.value="Please paste an error / stack trace / logs."; return; }
+
+    prodStatusEl.textContent="Status: Running…";
+    prodOutEl.value="Analyzing production issue…";
+
+    try{
+      const r=await fetch(PROD_ISSUE_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ issue: text })
+      });
+
+      if(!r.ok){
+        const t = await r.text();
+        throw new Error(t || ("HTTP " + r.status));
+      }
+
+      const data = await r.json();
+      prodOutEl.value = data.answer || JSON.stringify(data,null,2);
+      prodStatusEl.textContent="Status: Done";
+    }catch(e){
+      prodOutEl.value =
+        "Production issue endpoint not ready yet OR backend returned an error.\n\n" +
+        "Expected endpoint: POST " + PROD_ISSUE_URL + "\n\n" +
+        "Error:\n" + (e && e.message ? e.message : String(e));
+      prodStatusEl.textContent="Status: Error";
+    }
+  }
+
+  // Default tab
+  switchTab("research");
 </script>
 </body>
 </html>
